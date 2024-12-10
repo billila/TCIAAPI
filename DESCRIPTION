@@ -1,7 +1,7 @@
 Package: TCIAAPI
 Type: Package
 Title: Access and Download Images from TCIA API 
-Version: 0.1.0
+Version: 0.1.1
 Author: Ilaria Billato
 Maintainer: The package maintainer <ilaria.billato@phd.unipd.it>
 Description: A package to interact with The Cancer Imaging Archive (TCIA) API
@@ -11,3 +11,4 @@ Encoding: UTF-8
 Depends: httr2
 Suggests: jsonlite
 RoxygenNote: 7.3.2
+Date: 2024-12-10
