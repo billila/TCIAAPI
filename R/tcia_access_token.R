@@ -14,7 +14,7 @@
 #' @import httr2
 #'
 #' @examples
-#' tcia_access_token()
+#' tcia_access_token() |> httr2::obfuscate()
 #'
 #' @export
 tcia_access_token <- function(

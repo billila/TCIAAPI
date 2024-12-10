@@ -25,6 +25,6 @@ A character string containing the access token.
 This function sends a request to the TCIA API to obtain an access token.
 }
 \examples{
-tcia_access_token()
+tcia_access_token() |> httr2::obfuscate()
 
 }
