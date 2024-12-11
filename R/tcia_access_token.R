@@ -35,5 +35,9 @@ tcia_access_token <- function(
       stop("Authentication error: ", response$error)
 
     # Return the access token
-    return(response$access_token)
+    return(list(
+      access_token = response$access_token,
+      expires_in = response$expires_in
+    ))
+
 }
