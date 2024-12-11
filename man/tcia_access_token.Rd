@@ -2,21 +2,31 @@
 % Please edit documentation in R/tcia_access_token.R
 \name{tcia_access_token}
 \alias{tcia_access_token}
+\alias{tcia_token_expires}
 \title{Set API and Obtain Access Token}
 \usage{
 tcia_access_token(
+  username = "nbia_guest",
+  client_id = "NBIA",
+  grant_type = "password",
+  response = FALSE
+)
+
+tcia_token_expires(
   username = "nbia_guest",
   client_id = "NBIA",
   grant_type = "password"
 )
 }
 \arguments{
-\item{username}{A character string for the username (default: "nbia_guest").}
+\item{username}{\code{character(1)} The username (default: "nbia_guest").}
 
-\item{client_id}{A character string for the client ID (default: "NBIA").}
+\item{client_id}{\code{character(1)} The client ID (default: "NBIA").}
 
-\item{grant_type}{A character string for the grant type (default:
-"password").}
+\item{grant_type}{\code{character(1)} The grant type (default: "password").}
+
+\item{response}{\code{logical(1)} Whether to return the actual response (default:
+\code{FALSE}).}
 }
 \value{
 A character string containing the access token.
@@ -27,4 +37,5 @@ This function sends a request to the TCIA API to obtain an access token.
 \examples{
 tcia_access_token() |> httr2::obfuscate()
 
+tcia_token_expires()
 }
