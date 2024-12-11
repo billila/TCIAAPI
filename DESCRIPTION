@@ -11,4 +11,5 @@ Encoding: UTF-8
 Depends: httr2
 Suggests: jsonlite
 RoxygenNote: 7.3.2
+Roxygen: list(markdown = TRUE)
 Date: 2024-12-11
