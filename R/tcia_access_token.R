@@ -6,7 +6,6 @@
         req_body_form(
             username = username, client_id = client_id, grant_type = grant_type
         ) |>
-        req_method("POST") |>
         req_perform() |>
         resp_body_json()
     resp[["created"]] <- Sys.time()
