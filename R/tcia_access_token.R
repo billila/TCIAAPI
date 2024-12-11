@@ -1,3 +1,18 @@
+.TCIA_SERVICES_URL <- "https://services.cancerimagingarchive.net/"
+
+.tcia_access_token_new <- function(username, client_id, grant_type) {
+    resp <- request(.TCIA_SERVICES_URL) |>
+        req_template("nbia-api/oauth/token") |>
+        req_body_form(
+            username = username, client_id = client_id, grant_type = grant_type
+        ) |>
+        req_method("POST") |>
+        req_perform() |>
+        resp_body_json()
+    resp[["created"]] <- Sys.time()
+    resp
+}
+
 #' Set API and Obtain Access Token
 #'
 #' This function sends a request to the TCIA API to obtain an access token.
@@ -17,27 +32,33 @@
 #' tcia_access_token() |> httr2::obfuscate()
 #'
 #' @export
-tcia_access_token <- function(
-    username = "nbia_guest", client_id = "NBIA", grant_type = "password"
-) {
-    # Build the request
-    response <- request("https://services.cancerimagingarchive.net/") |>
-        req_template("nbia-api/oauth/token") |>
-        req_body_form(
-            username = username, client_id = client_id, grant_type = grant_type
-        ) |>
-        req_method("POST") |>
-        req_perform() |>
-        resp_body_json()
+tcia_access_token <- local({
+    tokens <- new.env(parent = emptyenv())
+    function(
+        username = "nbia_guest", client_id = "NBIA", grant_type = "password"
+    ) {
+        key <- paste(username, client_id, grant_type, sep = ":")
+        now <- Sys.time()
 
-    # Check for errors in the response
-    if (!is.null(response$error))
-      stop("Authentication error: ", response$error)
-
-    # Return the access token
-    return(list(
-      access_token = response$access_token,
-      expires_in = response$expires_in
-    ))
-
-}
+        if (is.null(tokens[[key]])) {
+            tokens[[key]] <- .tcia_access_token_new(
+                username = username,
+                client_id = client_id,
+                grant_type = grant_type
+            )
+        } else {
+            expires_in <-
+                tokens[[key]]$expires_in - (now - tokens[[key]]$created)
+            if (expires_in < 1L) {
+                if (expires_in > 0L)
+                    Sys.sleep(expires_in)
+                tokens[[key]] <- .tcia_access_token_new(
+                    username = username,
+                    client_id = client_id,
+                    grant_type = grant_type
+                )
+            }
+        }
+        tokens[[key]]$id_token
+  }
+})
