@@ -66,7 +66,7 @@ tcia_access_token <- local({
                 )
             }
         }
-        if (meta)
+        if (response)
             tokens[[key]]
         else
             tokens[[key]]$id_token
