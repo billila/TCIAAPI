@@ -35,7 +35,9 @@ download_svs <- function(camic_ids, destdir = tempdir()) {
     resps <- lapply(svs_urls, request) |>
         req_perform_parallel()
 
-    lapply(resps, .write_svs, destdir)
+    ## TODO: check if file exists then download if not in destdir
+    ##  force = TRUE to overwrite existing files
+    vapply(resps, .write_svs, character(1L), destdir)
 }
 
 #' @rdname download_svs
