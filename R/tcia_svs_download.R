@@ -17,19 +17,19 @@
 #' @param destdir `character(1)` The destination directory where the SVS images
 #'   will be saved. The default is `tempdir()`.
 #'
-#' @returns * `download_svs`: The path to the downloaded file
-#'  * `svs_info`: A list containing the metadata of the SVS image
+#' @returns * `tcia_svs_download`: The path to the downloaded file
+#'  * `tcia_svs_info`: A list containing the metadata of the SVS image
 #'
 #' @examples
 #' if (interactive()) {
-#'     svs_info("311781")
-#'     download_svs("311781")
-#'     download_svs(311781:311783)
+#'     tcia_svs_info("311781")
+#'     tcia_svs_download("311781")
+#'     tcia_svs_download(311781:311783)
 #' }
 #' @export
-download_svs <- function(camic_ids, destdir = tempdir()) {
+tcia_svs_download <- function(camic_ids, destdir = tempdir()) {
     svs_urls <- vapply(camic_ids, function(camic_id) {
-        svs_info(camic_id)$field_wsiimage[[1L]][["url"]]
+        tcia_svs_info(camic_id)$field_wsiimage[[1L]][["url"]]
     }, character(1L))
 
     resps <- lapply(svs_urls, request) |>
@@ -40,12 +40,12 @@ download_svs <- function(camic_ids, destdir = tempdir()) {
     vapply(resps, .write_svs, character(1L), destdir)
 }
 
-#' @rdname download_svs
+#' @rdname tcia_svs_download
 #'
 #' @param camic_id `character(1)` A single CAMIC ID.
 #'
 #' @export
-svs_info <- function(camic_id) {
+tcia_svs_info <- function(camic_id) {
     if (!is.character(camic_id))
         camic_id <- as.character(camic_id)
     request(.PATHDB_TCIA_URL) |>

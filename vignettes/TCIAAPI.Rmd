@@ -1,0 +1,105 @@
+---
+title: "Access The Cancer Imaging Archive (TCIA) API with R"
+author: "Marcel Ramos"
+date: "2021-10-06"
+output:
+  BiocStyle::html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    toc_depth: 3
+package: TCIAAPI
+---
+
+```{r,include=FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+
+# TCIAAPI R package
+
+## Installation
+
+Currently, the package only resides on GitHub. 
+
+```{r,eval=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("billila/TCIAAPI")
+```
+
+## Package load
+
+```{r,include=TRUE,results="hide",message=FALSE,warning=FALSE}
+library(TCIAAPI)
+```
+
+## Introduction
+
+The `TCIAAPI` package provides an interface to the Cancer Imaging Archive (TCIA)
+API. The TCIA API allows users to programmatically access the TCIA data. The
+package provides functions to obtain an access token, download SVS images, and
+retrieve metadata from the TCIA API.
+
+## Access Token
+
+The TCIA API requires an access token to access the data. The
+`tcia_access_token` function retrieves the access token from the TCIA API. 
+By default, it is configured to obtain a public token. Note that the token
+expires after a certain period of time and must be refreshed.
+
+```{r}
+tcia_access_token() |> httr2::obfuscate()
+```
+
+Note that we use `httr2::obfuscate` to hide the token from the output.
+
+## Information on SVS Images
+
+The `tcia_svs_info` function retrieves metadata information on SVS images from
+the TCIA API. The function requires a `camic_id` which is obtained from the
+'TCIA Histopathology Custom Dataset Builder.json' file. The json file can be
+obtained by navigating to the TCIA website
+<https://www.cancerimagingarchive.net/> under 'Access The Data', 'Search
+Histopathology Portal' and clicking on the 'TCIA Histopathology Custom Dataset
+Builder' link.
+
+```{r}
+svsinfo <- tcia_svs_info("311781") 
+svsinfo |> head(3L)
+```
+
+### Download URL
+
+The `tcia_svs_info` function returns a list containing the metadata of the SVS
+including the download URL. The download URL can be used to download the SVS
+images. 
+
+```{r}
+svsinfo[["field_wsiimage"]][[1L]][["url"]]
+```
+
+Note that currently the package does not provide a function to download the ~150
+MB json file programmatically.
+
+## Download SVS Images
+
+The `tcia_svs_download` function downloads SVS images from the TCIA API. Like
+`tcia_svs_info`, the function requires a `camic_id` which can be obtained from
+the 'TCIA Histopathology Custom Dataset Builder.json' file.
+
+```{r,eval=FALSE}
+tcia_svs_download("311781")
+#' [1] "/tmp/RtmpjrBN7Z/MSB-02960-04-02.svs"
+```
+
+The function downloads the SVS images to the temporary directory by default. The
+`destdir` argument can be used to specify a different directory.
+
+# SessionInfo
+
+```{r}
+sessionInfo()
+```
+
