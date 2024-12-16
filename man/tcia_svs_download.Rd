@@ -5,7 +5,7 @@
 \alias{tcia_svs_info}
 \title{Download SVS Images from the Cancer Imaging Archive}
 \usage{
-tcia_svs_download(camic_ids, destdir = tempdir())
+tcia_svs_download(camic_ids, destdir = tempdir(), force = FALSE)
 
 tcia_svs_info(camic_id)
 }
@@ -15,6 +15,9 @@ Histopathology Custom Dataset Builder.json' file.}
 
 \item{destdir}{\code{character(1)} The destination directory where the SVS images
 will be saved. The default is \code{tempdir()}.}
+
+\item{force}{\code{logical(1)} If \code{TRUE}, the function will re-download the SVS
+images even if they already exist in the \code{destdir}. The default is \code{FALSE}.}
 
 \item{camic_id}{\code{character(1)} A single CAMIC ID.}
 }

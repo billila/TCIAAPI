@@ -17,6 +17,9 @@
 #' @param destdir `character(1)` The destination directory where the SVS images
 #'   will be saved. The default is `tempdir()`.
 #'
+#' @param force `logical(1)` If `TRUE`, the function will re-download the SVS
+#'   images even if they already exist in the `destdir`. The default is `FALSE`.
+#'
 #' @returns * `tcia_svs_download`: The path to the downloaded file
 #'  * `tcia_svs_info`: A list containing the metadata of the SVS image
 #'
@@ -27,17 +30,29 @@
 #'     tcia_svs_download(311781:311783)
 #' }
 #' @export
-tcia_svs_download <- function(camic_ids, destdir = tempdir()) {
-    svs_urls <- vapply(camic_ids, function(camic_id) {
-        tcia_svs_info(camic_id)$field_wsiimage[[1L]][["url"]]
-    }, character(1L))
+tcia_svs_download <- function(camic_ids, destdir = tempdir(), force = FALSE) {
+    svs_urls <- vapply(
+        camic_ids,
+        function(camic_id) {
+            tcia_svs_info(camic_id)[["field_wsiimage"]][[1L]][["url"]]
+        }, character(1L)
+    )
 
-    resps <- lapply(svs_urls, request) |>
+    file_locations <- file.path(destdir, basename(svs_urls))
+    files_exist <- file.exists(file_locations)
+    if (all(files_exist) && !force) {
+        message("SVS already in 'destdir'; re-download with `force = TRUE`.")
+        return(file_locations)
+    }
+    svs_urls[!files_exist] <-
+        lapply(svs_urls[!files_exist], request) |>
         req_perform_parallel()
 
-    ## TODO: check if file exists then download if not in destdir
-    ##  force = TRUE to overwrite existing files
-    vapply(resps, .write_svs, character(1L), destdir)
+    mapply(
+        .write_svs,
+        svs_urls,
+        file_locations
+    )
 }
 
 #' @rdname tcia_svs_download
@@ -54,12 +69,10 @@ tcia_svs_info <- function(camic_id) {
         resp_body_json()
 }
 
-.write_svs <- function(resp, destdir) {
-    bin_raw <- resp_body_raw(resp)
-    outfile <-
-        file.path(destdir, basename(resp_url(resp)))
-    if (file.exists(outfile))
-        warning("Overwriting existing file: ", outfile)
-    writeBin(bin_raw, outfile)
-    outfile
+.write_svs <- function(resp, file) {
+    if (inherits(resp, "httr2_response")) {
+        bin_raw <- resp_body_raw(resp)
+        writeBin(bin_raw, file)
+    }
+    file
 }
