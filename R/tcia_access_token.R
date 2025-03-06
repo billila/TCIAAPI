@@ -70,7 +70,7 @@ tcia_access_token <- local({
             tokens[[key]]
         else
             tokens[[key]]$id_token
-  }
+    }
 })
 
 #' @rdname tcia_access_token

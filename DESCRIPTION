@@ -1,15 +1,29 @@
 Package: TCIAAPI
 Type: Package
 Title: Access and Download Images from TCIA API 
-Version: 0.1.3
-Author: Ilaria Billato
-Maintainer: The package maintainer <ilaria.billato@phd.unipd.it>
+Version: 0.99.0
+Authors@R: c(
+    person("Ilaria", "Billato", email = "ilaria.billato@phd.unipd.it",
+            role = c("aut", "cre"), comment = c(ORCID = "0000-0002-3335-3254", 
+            affiliation = "Department of Biology, University of Padova")),
+    person("Marcel", "Ramos", role = "aut",
+            comment = c(affiliation = 
+            "CUNY Graduate School of Public Health and Health Policy, 
+            New York, NY USA")))
 Description: A package to interact with The Cancer Imaging Archive (TCIA) API
   for searching and downloading images (DICOM, tiff, svs, png).
 License: Artistic-2.0
 Encoding: UTF-8
-Depends: httr2
-Suggests: jsonlite
+Depends: 
+    httr2
+Suggests: 
+    jsonlite,
+    knitr,
+    rmarkdown
+biocViews: ShinyApps
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Date: 2024-12-16
+BugReports: https://github.com/billila/TCIAAPI/issues
+URL: https://github.com/billila/TCIAAPI
+VignetteBuilder: knitr

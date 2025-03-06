@@ -1,7 +1,7 @@
 ---
 title: "Access The Cancer Imaging Archive (TCIA) API with R"
 author: "Marcel Ramos"
-date: "2021-10-06"
+date: "2025-03-06"
 output:
   BiocStyle::html_document:
     toc: true
@@ -9,6 +9,10 @@ output:
     toc_float: true
     toc_depth: 3
 package: TCIAAPI
+vignette: >
+  %\VignetteIndexEntry{TCIAAPI}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r,include=FALSE}
