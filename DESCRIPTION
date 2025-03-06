@@ -20,7 +20,8 @@ Depends:
 Suggests: 
     jsonlite,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 biocViews: DataImport
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
