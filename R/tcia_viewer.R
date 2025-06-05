@@ -3,13 +3,14 @@
 #' Embeds the caMicroscope mini viewer for a given slide ID using an iframe.
 #' Requires an active internet connection.
 #'
-#' @param camic_id Character string or numeric. The slide ID for caMicroscope
+#' @param camic_id `character(1)` or `numeric(1)` The slide ID for caMicroscope
 #'   (e.g., "311781").
-#' @param width Character string. The width of the widget (e.g., "100%",
-#'   "800px").
-#' @param height Character string. The height of the widget (e.g., "600px",
-#'   "80vh").
-#' @param elementId Optional character string. An explicit ID for the widget's
+#'
+#' @param width,height `character(1)` A valid CSS unit (like `'100%'`,
+#'   `'400px'`, `'auto'`) or a number, which will be coerced to a string and
+#'   have `'px'` appended.
+#'
+#' @param elementId `character(1)` (optional) An explicit ID for the widget's
 #'   root HTML element.
 #'
 #' @return An HTML widget object.
@@ -39,15 +40,13 @@ tcia_viewer <- function(
         )
     )
 
-    # Data to be passed to JavaScript
     x <- list(
         url = iframe_url,
         camic_id = camic_id
     )
 
-    # Create the widget
     htmlwidgets::createWidget(
-        name = 'tcia_viewer', # This must match the JS binding name
+        name = 'tcia_viewer',
         x,
         width = width,
         height = height,
@@ -55,10 +54,10 @@ tcia_viewer <- function(
         elementId = elementId,
         sizingPolicy = htmlwidgets::sizingPolicy(
             defaultWidth = "100%",
-            defaultHeight = "100%", # Let the container define height
+            defaultHeight = "100%",
             viewer.padding = 0,
-            viewer.fill = TRUE, # iframe should fill the widget container
-            browser.fill = TRUE # Widget can fill browser page in some contexts
+            viewer.fill = TRUE,
+            browser.fill = TRUE
         )
     )
 }
@@ -69,13 +68,15 @@ tcia_viewer <- function(
 #' applications and interactive Rmd documents.
 #'
 #' @param outputId output variable to read from
-#' @param width,height Must be a valid CSS unit (like \code{'100\%'},
-#'   \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-#'   string and have \code{'px'} appended.
+#'
+#' @inheritParams tcia_viewer
+#'
 #' @param expr An expression that generates a caMicroscopeViewer
-#' @param env The environment in which to evaluate \code{expr}.
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
-#'   is useful if you want to save an expression in a variable.
+#'
+#' @param env The environment in which to evaluate `expr`.
+#'
+#' @param quoted Is `expr` a quoted expression (with `quote()`)? This is useful
+#'   if you want to save an expression in a variable.
 #'
 #' @name tcia_viewer-shiny
 #'
@@ -101,9 +102,7 @@ render_tcia_viewer <- function(
     env = parent.frame(),
     quoted = FALSE
 ) {
-    if (!quoted) {
-        expr <- substitute(expr)
-    } # force quoted
+    if (!quoted) expr <- substitute(expr)
     htmlwidgets::shinyRenderWidget(
         expr,
         tcia_viewer_output,

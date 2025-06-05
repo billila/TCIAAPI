@@ -7,16 +7,14 @@
 tcia_viewer(camic_id, width = "100\%", height = "600px", elementId = NULL)
 }
 \arguments{
-\item{camic_id}{Character string or numeric. The slide ID for caMicroscope
+\item{camic_id}{\code{character(1)} or \code{numeric(1)} The slide ID for caMicroscope
 (e.g., "311781").}
 
-\item{width}{Character string. The width of the widget (e.g., "100\%",
-"800px").}
+\item{width, height}{\code{character(1)} A valid CSS unit (like \code{'100\%'},
+\code{'400px'}, \code{'auto'}) or a number, which will be coerced to a string and
+have \code{'px'} appended.}
 
-\item{height}{Character string. The height of the widget (e.g., "600px",
-"80vh").}
-
-\item{elementId}{Optional character string. An explicit ID for the widget's
+\item{elementId}{\code{character(1)} (optional) An explicit ID for the widget's
 root HTML element.}
 }
 \value{
