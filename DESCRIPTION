@@ -15,8 +15,14 @@ Description: A package to interact with The Cancer Imaging Archive (TCIA) API
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: false
-Depends: 
+Depends:
+    R (>= 4.5.0),
     httr2
+Imports:
+    BiocBaseUtils,
+    glue,
+    htmlwidgets,
+    utils
 Suggests: 
     jsonlite,
     knitr,

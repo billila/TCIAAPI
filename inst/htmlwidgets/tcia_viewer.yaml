@@ -1,0 +1,5 @@
+## No specific JavaScript or CSS dependencies are bundled with this widget
+## itself, as all content is displayed within an iframe from an external URL.
+## The htmlwidgets.js library is automatically included by the framework.
+
+dependencies: [] # An empty list is fine
